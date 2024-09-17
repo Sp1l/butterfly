@@ -1,6 +1,6 @@
 # ƸӜƷ butterfly 3.0
 
-![](http://paradoxxxzero.github.io/assets/butterfly_2.0_1.gif)
+![](https://github.com/paradoxxxzero/blog/blob/master/assets/butterfly_2.0_1.gif)
 
 
 ## Description
@@ -60,7 +60,7 @@ Or with PAM authentication (ROOT required)
 
 You can change `sshd` to your preferred PAM profile.
 
-The first time it will ask you to generate the certificates (see: [here](http://paradoxxxzero.github.io/2014/03/21/butterfly-with-ssl-auth.html))
+The first time it will ask you to generate the certificates (see: [here](https://github.com/paradoxxxzero/blog/blob/master/_posts/2014-03-21-butterfly-with-ssl-auth.markdown))
 
 
 ## Run it with systemd (linux)
@@ -86,7 +86,7 @@ Don't hesitate to fork the repository and start hacking on it, I am very open to
 
 If you don't know what to do go to the github issues and pick one you like.
 
-If you want to motivate me to continue working on this project you can tip me, see: http://paradoxxxzero.github.io/about/
+If you want to motivate me to continue working on this project you can tip me, see: https://florian.mounier.dev/
 
 Client side development use [grunt](http://gruntjs.com/) and [bower](http://bower.io/).
 
@@ -95,7 +95,7 @@ Client side development use [grunt](http://gruntjs.com/) and [bower](http://bowe
 The js part is based on [term.js](https://github.com/chjj/term.js/) which is based on [jslinux](http://bellard.org/jslinux/).
 ## Author
 
-[Florian Mounier](http://paradoxxxzero.github.io/)
+[Florian Mounier](https://florian.mounier.dev/)
 
 ## License
 
