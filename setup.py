@@ -24,7 +24,7 @@ setup(
     platforms="Any",
     scripts=['butterfly.server.py', 'scripts/butterfly', 'scripts/b'],
     packages=['butterfly'],
-    install_requires=["tornado>=3.2", "pyOpenSSL"],
+    install_requires=["tornado>=3.2", "pyOpenSSL", "cryptography"],
     extras_require={
         'themes': ["libsass"],
         'systemd': ['tornado_systemd'],

@@ -276,6 +276,15 @@ if (options.generate_current_user_pkcs or
         current_user = None
 
     from OpenSSL import crypto
+    try:
+        from OpenSSL.crypto import PKCS12
+        log.info("Using PKCS12 from OpenSSL.crypto
+    except:
+        from cryptography.hazmat.primitives.serialization import pkcs12 as PKCS12
+        from cryptography.hazmat.primitives.serialization import BestAvailableEncryption, NoEncryption
+        from cryptography.hazmat.primitives import serialization
+        from cryptography import x509
+        log.info("Using PKCS12 from py-cryptography")
     if not all(map(os.path.exists, [ca, ca_key])):
         print('Please generate certificates using --generate-certs before')
         sys.exit(1)
@@ -308,12 +317,6 @@ if (options.generate_current_user_pkcs or
     client_cert.sign(client_pk, 'sha512')
     client_cert.sign(ca_pk, 'sha512')
 
-    pfx = crypto.PKCS12()
-    pfx.set_certificate(client_cert)
-    pfx.set_privatekey(client_pk)
-    pfx.set_ca_certificates([ca_cert])
-    pfx.set_friendlyname(('%s cert for butterfly' % user).encode('utf-8'))
-
     while True:
         password = getpass.getpass('\nPKCS12 Password (can be blank): ')
         password2 = getpass.getpass('Verify Password (can be blank): ')
@@ -322,7 +325,25 @@ if (options.generate_current_user_pkcs or
         print('Passwords do not match.')
 
     print('')
-    write(pkcs12 % user, pfx.export(password.encode('utf-8')))
+
+    if isintance(PKCS12, OpenSSL.crypto.PKCS12):
+        pfx = crypto.PKCS12()
+        pfx.set_certificate(client_cert)
+        pfx.set_privatekey(client_pk)
+        pfx.set_ca_certificates([ca_cert])
+        pfx.set_friendlyname(('%s cert for butterfly' % user).encode('utf-8'))
+        pfx = pfx.export(password.encode('utf-8'))
+    else:
+        key = serialization.load_pem_private_key(crypto.dump_privatekey(crypto.FILETYPE_PEM, client_pk), None)
+        cert = x509.load_pem_x509_certificate(crypto.dump_certificate(crypto.FILETYPE_PEM,client_cert))
+        cas = x509.load_pem_x509_certificate(crypto.dump_certificate(crypto.FILETYPE_PEM,ca_cert))
+        encryption = NoEncryption() if password == '' else BestAvailableEncryption(password.encode('utf-8'))
+        pfx = PKCS12.serialize_key_and_certificates(
+            f'{user} cert for butterfly'.encode('utf-8'),
+            key, cert, [cas], encryption
+        )
+
+    write(pkcs12 % user, pfx)
     os.chmod(pkcs12 % user, stat.S_IRUSR | stat.S_IWUSR)  # 0o600 perms
     sys.exit(0)
 
