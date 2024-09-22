@@ -278,7 +278,7 @@ if (options.generate_current_user_pkcs or
     from OpenSSL import crypto
     try:
         from OpenSSL.crypto import PKCS12
-        log.info("Using PKCS12 from OpenSSL.crypto
+        log.info("Using PKCS12 from OpenSSL.crypto")
     except:
         from cryptography.hazmat.primitives.serialization import pkcs12 as PKCS12
         from cryptography.hazmat.primitives.serialization import BestAvailableEncryption, NoEncryption
